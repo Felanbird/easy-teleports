@@ -26,7 +26,7 @@ public class SlayerRing implements Replacer
 		replacements.clear();
 		replacements.add(new TeleportReplacement("Teleport to the Stronghold Slayer Cave", config.replacementSlayerStronghold()));
 		replacements.add(new TeleportReplacement("Teleport to the Morytania Slayer Tower", config.replacementSlayerTower()));
-		replacements.add(new TeleportReplacement("Teleport to the Rellekka Slayer Caves", config.replacementSlayerRellekka()));
+		replacements.add(new TeleportReplacement("Teleport to the Fremennik Slayer Dungeon", config.replacementSlayerRellekka()));
 		replacements.add(new TeleportReplacement("Teleport to Tarn's Lair", config.replacementTarns()));
 		replacements.add(new TeleportReplacement("Teleport to Dark Beasts", config.replacementDarkBeasts()));
 	}

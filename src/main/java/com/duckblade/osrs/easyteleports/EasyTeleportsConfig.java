@@ -593,14 +593,14 @@ public interface EasyTeleportsConfig extends Config
 
 	@ConfigItem(
 		keyName = "replacementSlayerRellekka",
-		name = "Rellekka Slayer Caves",
-		description = "Replace Rellekka Slayer Caves",
+		name = "Fremennik Slayer Dungeon",
+		description = "Replace Fremennik Slayer Dungeon",
 		section = SECTION_SLAYER_RING,
 		position = POSITION_SLAYER_RING + 3
 	)
 	default String replacementSlayerRellekka()
 	{
-		return "Rellekka Caves";
+		return "Fremennik Dungeon";
 	}
 
 	@ConfigItem(
