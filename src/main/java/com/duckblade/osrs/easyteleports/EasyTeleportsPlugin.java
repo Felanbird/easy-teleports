@@ -30,9 +30,10 @@ import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -118,20 +119,20 @@ public class EasyTeleportsPlugin extends Plugin
 	public void onWidgetLoaded(WidgetLoaded e)
 	{
 		// chatbox dialog
-		if (e.getGroupId() == WidgetInfo.DIALOG_OPTION_OPTIONS.getGroupId())
+		if (e.getGroupId() == ComponentID.DIALOG_OPTION_OPTIONS)
 		{
-			clientThread.invokeLater(() -> replaceWidgetChildren(WidgetInfo.DIALOG_OPTION_OPTIONS, Replacer::isApplicableToDialog));
+			clientThread.invokeLater(() -> replaceWidgetChildren(ComponentID.DIALOG_OPTION_OPTIONS, Replacer::isApplicableToDialog));
 		}
 
 		// the scroll thing that xeric's talisman uses
 		// annoyingly, the header text and teleport entries share a groupId (187.0 vs 187.3),
 		// but don't share a parent with that same groupId, their parent is 164.16
-		if (e.getGroupId() == WidgetID.ADVENTURE_LOG_ID)
+		if (e.getGroupId() == InterfaceID.ADVENTURE_LOG)
 		{
 			clientThread.invokeLater(() ->
 			{
 				Widget advLogHeader = getAdventureLogHeader();
-				replaceWidgetChildren(WidgetID.ADVENTURE_LOG_ID, 3, (r, w) -> r.isApplicableToAdventureLog(advLogHeader));
+				replaceWidgetChildren(InterfaceID.ADVENTURE_LOG, 3, (r, w) -> r.isApplicableToAdventureLog(advLogHeader));
 			});
 			return;
 		}
@@ -155,9 +156,11 @@ public class EasyTeleportsPlugin extends Plugin
 		}
 	}
 
-	private void replaceWidgetChildren(WidgetInfo widgetInfo, BiPredicate<Replacer, Widget> filterSelector)
+	private void replaceWidgetChildren(int widgetInfo, BiPredicate<Replacer, Widget> filterSelector)
+									// this is probably also wrong
 	{
-		replaceWidgetChildren(widgetInfo.getGroupId(), widgetInfo.getChildId(), filterSelector);
+		replaceWidgetChildren(widgetInfo.getGroupId(), WidgetUtil.componentToId(widgetInfo), filterSelector);
+									// ^ this is wrong
 	}
 
 	private void replaceWidgetChildren(int groupId, int entriesChildId, BiPredicate<Replacer, Widget> filterSelector)
@@ -210,7 +213,7 @@ public class EasyTeleportsPlugin extends Plugin
 
 	private Widget getAdventureLogHeader()
 	{
-		Widget adventureLogRoot = client.getWidget(WidgetInfo.ADVENTURE_LOG);
+		Widget adventureLogRoot = client.getWidget(InterfaceID.ADVENTURE_LOG);
 		if (adventureLogRoot == null)
 		{
 			return null;
